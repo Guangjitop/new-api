@@ -123,11 +123,53 @@ if (isMobileScreen) {
   // showNoticeOptions.transition = 'flip';
 }
 
+function getAxiosStatus(error) {
+  return error?.response?.status;
+}
+
+function getAxiosResponseText(error) {
+  const responseData = error?.response?.data;
+  if (typeof responseData === 'string') {
+    return responseData;
+  }
+  if (responseData && typeof responseData.message === 'string') {
+    return responseData.message;
+  }
+  return '';
+}
+
+function isDevProxyUnavailable(error) {
+  if (import.meta.env.MODE !== 'development') {
+    return false;
+  }
+  if (error?.name !== 'AxiosError') {
+    return false;
+  }
+  if (getAxiosStatus(error) !== 500) {
+    return false;
+  }
+  const details = `${error?.message || ''} ${getAxiosResponseText(error)}`;
+  return /Error occurred while trying to proxy|ECONNREFUSED|socket hang up|proxy error/i.test(
+    details,
+  );
+}
+
 export function showError(error) {
   console.error(error);
-  if (error.message) {
-    if (error.name === 'AxiosError') {
-      switch (error.response.status) {
+  if (error?.message) {
+    if (error?.name === 'AxiosError') {
+      if (isDevProxyUnavailable(error)) {
+        Toast.error(
+          '错误：开发代理请求失败，后端服务不可达。请先启动后端（默认 http://localhost:3000）。',
+        );
+        return;
+      }
+      const status = getAxiosStatus(error);
+      if (!status) {
+        Toast.error('错误：网络请求失败，请检查后端服务是否可用。');
+        return;
+      }
+      switch (status) {
         case 401:
           // 清除用户状态
           localStorage.removeItem('user');

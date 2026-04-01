@@ -153,6 +153,50 @@ docker run --name new-api -d --restart always \
 
 📖 更多部署方式请参考 [部署指南](https://docs.newapi.pro/zh/docs/installation)
 
+### 一键脚本（Windows / Linux）
+
+项目根目录新增了 `scripts/` 脚本，可直接一键运行：
+
+**源码运行（前后端联调）**
+
+```bash
+# Linux
+bash ./scripts/run-source.linux.sh
+```
+
+```powershell
+# Windows PowerShell
+powershell -ExecutionPolicy Bypass -File "./scripts/run-source.windows.ps1"
+```
+
+**Docker Compose 部署**
+
+```bash
+# Linux
+bash ./scripts/deploy.linux.sh
+```
+
+```powershell
+# Windows PowerShell
+powershell -ExecutionPolicy Bypass -File "./scripts/deploy.windows.ps1"
+```
+
+**Docker 命令部署**
+
+```bash
+# Linux
+bash ./scripts/deploy.linux.sh docker --container-name new-api-prod --host-port 3001
+```
+
+```powershell
+# Windows PowerShell
+powershell -ExecutionPolicy Bypass -File "./scripts/deploy.windows.ps1" -Mode docker -ContainerName "new-api-prod" -HostPort 3001
+```
+
+> 提示：部署脚本默认使用 `compose` 模式，也支持新增的 `docker` 模式。
+> Docker 模式下如果存在同名容器，需显式添加 `--replace-existing` 或 `-ReplaceExisting` 才会删除并重建。
+> 如需让 Docker 单容器模式连接外部 PostgreSQL / Redis，可额外传入 `--env-file .env.prod` 或 `-EnvFile ".env.prod"`。
+
 ---
 
 ## 📚 文档

@@ -83,31 +83,40 @@ const Home = () => {
 
   const displayHomePageContent = async () => {
     setHomePageContent(localStorage.getItem('home_page_content') || '');
-    const res = await API.get('/api/home_page_content');
-    const { success, message, data } = res.data;
-    if (success) {
-      let content = data;
-      if (!data.startsWith('https://')) {
-        content = marked.parse(data);
-      }
-      setHomePageContent(content);
-      localStorage.setItem('home_page_content', content);
-
-      // 如果内容是 URL，则发送主题模式
-      if (data.startsWith('https://')) {
-        const iframe = document.querySelector('iframe');
-        if (iframe) {
-          iframe.onload = () => {
-            iframe.contentWindow.postMessage({ themeMode: actualTheme }, '*');
-            iframe.contentWindow.postMessage({ lang: i18n.language }, '*');
-          };
+    try {
+      const res = await API.get('/api/home_page_content', {
+        skipErrorHandler: true,
+      });
+      const { success, message, data } = res.data;
+      if (success) {
+        const rawData = typeof data === 'string' ? data : '';
+        let content = rawData;
+        if (!rawData.startsWith('https://')) {
+          content = marked.parse(rawData);
         }
+        setHomePageContent(content);
+        localStorage.setItem('home_page_content', content);
+
+        // 如果内容是 URL，则发送主题模式
+        if (rawData.startsWith('https://')) {
+          const iframe = document.querySelector('iframe');
+          if (iframe) {
+            iframe.onload = () => {
+              iframe.contentWindow.postMessage({ themeMode: actualTheme }, '*');
+              iframe.contentWindow.postMessage({ lang: i18n.language }, '*');
+            };
+          }
+        }
+      } else {
+        showError(message || '加载首页内容失败');
+        setHomePageContent('加载首页内容失败...');
       }
-    } else {
-      showError(message);
+    } catch (error) {
+      showError(error);
       setHomePageContent('加载首页内容失败...');
+    } finally {
+      setHomePageContentLoaded(true);
     }
-    setHomePageContentLoaded(true);
   };
 
   const handleCopyBaseURL = async () => {
@@ -123,13 +132,15 @@ const Home = () => {
       const today = new Date().toDateString();
       if (lastCloseDate !== today) {
         try {
-          const res = await API.get('/api/notice');
-          const { success, data } = res.data;
-          if (success && data && data.trim() !== '') {
+          const res = await API.get('/api/notice', { skipErrorHandler: true });
+          const { success, message, data } = res.data;
+          if (success && typeof data === 'string' && data.trim() !== '') {
             setNoticeVisible(true);
+          } else if (!success && message) {
+            showError(message);
           }
         } catch (error) {
-          console.error('获取公告失败:', error);
+          showError(error);
         }
       }
     };

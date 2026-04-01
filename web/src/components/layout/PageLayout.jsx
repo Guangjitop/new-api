@@ -122,22 +122,22 @@ const PageLayout = () => {
 
   const loadStatus = async () => {
     try {
-      const res = await API.get('/api/status');
+      const res = await API.get('/api/status', { skipErrorHandler: true });
       const { success, data } = res.data;
       if (success) {
         statusDispatch({ type: 'set', payload: data });
         setStatusData(data);
       } else {
-        showError('Unable to connect to server');
+        showError('状态加载失败，请检查后端服务。');
       }
     } catch (error) {
-      showError('Failed to load status');
+      showError(error);
     }
   };
 
   useEffect(() => {
     loadUser();
-    loadStatus().catch(console.error);
+    loadStatus();
     let systemName = getSystemName();
     if (systemName) {
       document.title = systemName;
