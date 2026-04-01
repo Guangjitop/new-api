@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"sync"
 
-	"github.com/QuantumNous/new-api/common"
+	"github.com/Guangjitop/new-api/common"
 )
 
 var userUsableGroups = map[string]string{

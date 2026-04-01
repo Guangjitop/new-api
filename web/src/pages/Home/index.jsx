@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2025 QuantumNous
+Copyright (C) 2025 Guangjitop
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -14,7 +14,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-For commercial licensing, please contact support@quantumnous.com
+For commercial licensing, please contact your-email@example.com
 */
 
 import React, { useContext, useEffect, useState } from 'react';
@@ -156,26 +156,34 @@ const Home = () => {
         isMobile={isMobile}
       />
       {homePageContentLoaded && homePageContent === '' ? (
-        <div className='w-full overflow-x-hidden'>
+        <div className='w-full overflow-x-hidden cyber-grid-bg min-h-screen'>
           {/* Banner 部分 */}
-          <div className='w-full border-b border-semi-color-border min-h-[500px] md:min-h-[600px] lg:min-h-[700px] relative overflow-x-hidden'>
-            {/* 背景模糊晕染球 */}
-            <div className='blur-ball blur-ball-indigo' />
-            <div className='blur-ball blur-ball-teal' />
-            <div className='flex items-center justify-center h-full px-4 py-20 md:py-24 lg:py-32 mt-10'>
+          <div className='w-full border-b border-cyber-border min-h-[500px] md:min-h-[600px] lg:min-h-[700px] relative overflow-hidden'>
+            {/* 霓虹模糊光晕 */}
+            <div
+              className='absolute w-[400px] h-[400px] rounded-full blur-[150px] pointer-events-none z-0 mix-blend-screen opacity-20'
+              style={{ top: '-10%', left: '-10%', background: 'var(--semi-color-primary)' }}
+            />
+            <div
+              className='absolute w-[400px] h-[400px] rounded-full blur-[150px] pointer-events-none z-0 mix-blend-screen opacity-10'
+              style={{ bottom: '-10%', right: '-10%', background: '#ff00ff' }}
+            />
+            <div className='flex items-center justify-center h-full px-4 py-20 md:py-24 lg:py-32 mt-10 relative z-10'>
               {/* 居中内容区 */}
               <div className='flex flex-col items-center justify-center text-center max-w-4xl mx-auto'>
                 <div className='flex flex-col items-center justify-center mb-6 md:mb-8'>
                   <h1
-                    className={`text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-semi-color-text-0 leading-tight ${isChinese ? 'tracking-wide md:tracking-wider' : ''}`}
+                    className={`relative inline-block cyber-title-scan text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-cyber uppercase font-bold text-cyber-accent leading-tight ${isChinese ? 'tracking-widest' : 'tracking-wider'}`}
                   >
                     <>
-                      {t('统一的')}
-                      <br />
-                      <span className='shine-text'>{t('大模型接口网关')}</span>
+                      <span className='cyber-glitch-full block' data-text={`${t('统一的')}\n${t('大模型接口网关')}`}>
+                        {t('统一的')}
+                        {'\n'}
+                        {t('大模型接口网关')}
+                      </span>
                     </>
                   </h1>
-                  <p className='text-base md:text-lg lg:text-xl text-semi-color-text-1 mt-4 md:mt-6 max-w-xl'>
+                  <p className='text-base md:text-lg lg:text-xl text-cyber-text mt-4 md:mt-6 max-w-xl font-mono'>
                     {t('更好的价格，更好的稳定性，只需要将模型基址替换为：')}
                   </p>
                   {/* BASE URL 与端点选择 */}
@@ -183,10 +191,10 @@ const Home = () => {
                     <Input
                       readonly
                       value={serverAddress}
-                      className='flex-1 !rounded-full'
+                      className='flex-1 cyber-chamfer-sm'
                       size={isMobile ? 'default' : 'large'}
                       suffix={
-                        <div className='flex items-center gap-2'>
+                        <div className='flex items-center gap-2 pr-1'>
                           <ScrollList
                             bodyHeight={32}
                             style={{ border: 'unset', boxShadow: 'unset' }}
@@ -200,10 +208,11 @@ const Home = () => {
                             />
                           </ScrollList>
                           <Button
+                            theme='solid'
                             type='primary'
                             onClick={handleCopyBaseURL}
                             icon={<IconCopy />}
-                            className='!rounded-full'
+                            className='cyber-chamfer-sm'
                           />
                         </div>
                       }
@@ -218,7 +227,7 @@ const Home = () => {
                       theme='solid'
                       type='primary'
                       size={isMobile ? 'default' : 'large'}
-                      className='!rounded-3xl px-8 py-2'
+                      className='cyber-chamfer px-8 py-2 font-mono uppercase'
                       icon={<IconPlay />}
                     >
                       {t('获取密钥')}
@@ -227,14 +236,9 @@ const Home = () => {
                   {isDemoSiteMode && statusState?.status?.version ? (
                     <Button
                       size={isMobile ? 'default' : 'large'}
-                      className='flex items-center !rounded-3xl px-6 py-2'
+                      className='flex items-center cyber-chamfer px-6 py-2 font-mono'
                       icon={<IconGithubLogo />}
-                      onClick={() =>
-                        window.open(
-                          'https://github.com/QuantumNous/new-api',
-                          '_blank',
-                        )
-                      }
+                      onClick={() => window.open('/', '_blank')}
                     >
                       {statusState.status.version}
                     </Button>
@@ -242,7 +246,7 @@ const Home = () => {
                     docsLink && (
                       <Button
                         size={isMobile ? 'default' : 'large'}
-                        className='flex items-center !rounded-3xl px-6 py-2'
+                        className='flex items-center cyber-chamfer px-6 py-2 font-mono uppercase'
                         icon={<IconFile />}
                         onClick={() => window.open(docsLink, '_blank')}
                       >
@@ -254,15 +258,14 @@ const Home = () => {
 
                 {/* 框架兼容性图标 */}
                 <div className='mt-12 md:mt-16 lg:mt-20 w-full'>
-                  <div className='flex items-center mb-6 md:mb-8 justify-center'>
+                  <div className='flex items-center mb-6 md:mb-8 justify-center opacity-80'>
                     <Text
-                      type='tertiary'
-                      className='text-lg md:text-xl lg:text-2xl font-light'
+                      className='text-lg md:text-xl lg:text-2xl font-cyber uppercase text-cyber-accent tracking-widest'
                     >
                       {t('支持众多的大模型供应商')}
                     </Text>
                   </div>
-                  <div className='flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6 lg:gap-8 max-w-5xl mx-auto px-4'>
+                  <div className='flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6 lg:gap-8 max-w-5xl mx-auto px-4 model-icons-anim-group'>
                     <div className='w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center'>
                       <Moonshot size={40} />
                     </div>

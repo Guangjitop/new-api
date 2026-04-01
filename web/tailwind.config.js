@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2025 QuantumNous
+Copyright (C) 2025 Guangjitop
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -14,7 +14,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-For commercial licensing, please contact support@quantumnous.com
+For commercial licensing, please contact your-email@example.com
 */
 
 export default {
@@ -134,6 +134,27 @@ export default {
       'semi-color-data-19': 'var(--semi-color-data-19)',
     },
     extend: {
+      colors: {
+        cyber: {
+          bg: '#0a0a0f',
+          foreground: '#e0e0e0',
+          card: '#12121a',
+          muted: '#1c1c2e',
+          'muted-foreground': '#6b7280',
+          accent: '#00ff88',
+          'accent-secondary': '#ff00ff',
+          'accent-tertiary': '#00d4ff',
+          border: '#2a2a3a',
+          input: '#12121a',
+          ring: '#00ff88',
+          destructive: '#ff3366',
+        }
+      },
+      fontFamily: {
+        cyber: ['Orbitron', '"Share Tech Mono"', 'monospace'],
+        mono: ['"JetBrains Mono"', '"Fira Code"', 'Consolas', 'monospace'],
+        label: ['"Share Tech Mono"', 'monospace'],
+      },
       borderRadius: {
         'semi-border-radius-extra-small':
           'var(--semi-border-radius-extra-small)',
@@ -142,6 +163,32 @@ export default {
         'semi-border-radius-large': 'var(--semi-border-radius-large)',
         'semi-border-radius-circle': 'var(--semi-border-radius-circle)',
         'semi-border-radius-full': 'var(--semi-border-radius-full)',
+      },
+      animation: {
+        blink: 'blink 1s step-end infinite',
+        glitch: 'glitch 2s linear infinite',
+        scanline: 'scanline 8s linear infinite',
+        'rgb-shift': 'rgbShift 3s steps(2) infinite',
+      },
+      keyframes: {
+        blink: {
+          '50%': { opacity: '0' },
+        },
+        glitch: {
+          '0%, 100%': { transform: 'translate(0)' },
+          '20%': { transform: 'translate(-2px, 2px)' },
+          '40%': { transform: 'translate(2px, -2px)' },
+          '60%': { transform: 'translate(-1px, -1px)' },
+          '80%': { transform: 'translate(1px, 1px)' },
+        },
+        scanline: {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(100vh)' },
+        },
+        rgbShift: {
+          '0%, 100%': { textShadow: '-2px 0 #ff00ff, 2px 0 #00d4ff' },
+          '50%': { textShadow: '2px 0 #ff00ff, -2px 0 #00d4ff' },
+        },
       },
     },
   },

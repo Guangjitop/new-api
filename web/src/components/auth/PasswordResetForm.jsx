@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2025 QuantumNous
+Copyright (C) 2025 Guangjitop
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -14,7 +14,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-For commercial licensing, please contact support@quantumnous.com
+For commercial licensing, please contact your-email@example.com
 */
 
 import React, { useEffect, useState } from 'react';
@@ -104,29 +104,29 @@ const PasswordResetForm = () => {
   }
 
   return (
-    <div className='relative overflow-hidden bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
-      {/* 背景模糊晕染球 */}
+    <div className='relative overflow-hidden cyber-grid-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 min-h-screen'>
+      {/* 霓虹模糊光晕 */}
       <div
-        className='blur-ball blur-ball-indigo'
-        style={{ top: '-80px', right: '-80px', transform: 'none' }}
+        className='absolute w-[360px] h-[360px] rounded-full blur-[120px] pointer-events-none z-0 mix-blend-screen opacity-20'
+        style={{ top: '-80px', right: '-80px', background: 'var(--semi-color-primary)' }}
       />
       <div
-        className='blur-ball blur-ball-teal'
-        style={{ top: '50%', left: '-120px' }}
+        className='absolute w-[360px] h-[360px] rounded-full blur-[120px] pointer-events-none z-0 mix-blend-screen opacity-10'
+        style={{ bottom: '-120px', left: '-120px', background: '#ff00ff' }}
       />
-      <div className='w-full max-w-sm mt-[60px]'>
+      <div className='w-full max-w-sm mt-[60px] relative z-10'>
         <div className='flex flex-col items-center'>
           <div className='w-full max-w-md'>
             <div className='flex items-center justify-center mb-6 gap-2'>
-              <img src={logo} alt='Logo' className='h-10 rounded-full' />
-              <Title heading={3} className='!text-gray-800'>
+              <img src={logo} alt='Logo' className='h-10' />
+              <Title heading={3} className='text-cyber-accent font-cyber uppercase tracking-widest cyber-glitch' data-text={systemName}>
                 {systemName}
               </Title>
             </div>
 
-            <Card className='border-0 !rounded-2xl overflow-hidden'>
+            <Card className='border border-cyber-border cyber-chamfer bg-cyber-card overflow-hidden shadow-[var(--box-shadow-neon-sm)]'>
               <div className='flex justify-center pt-6 pb-2'>
-                <Title heading={3} className='text-gray-800 dark:text-gray-200'>
+                <Title heading={3} className='text-cyber-accent font-cyber uppercase tracking-widest'>
                   {t('密码重置')}
                 </Title>
               </div>
@@ -142,10 +142,10 @@ const PasswordResetForm = () => {
                     prefix={<IconMail />}
                   />
 
-                  <div className='space-y-2 pt-2'>
+                  <div className='space-y-2 pt-4'>
                     <Button
-                      theme='solid'
-                      className='w-full !rounded-full'
+                      theme='primary'
+                      className='w-full'
                       type='primary'
                       htmlType='submit'
                       onClick={handleSubmit}

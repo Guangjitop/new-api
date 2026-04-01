@@ -1,0 +1,9 @@
+services:
+  new-api:
+    container_name: new-api-local
+    ports:
+      - "3001:3000"
+  redis:
+    container_name: redis-local
+  postgres:
+    container_name: postgres-local

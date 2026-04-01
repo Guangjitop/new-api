@@ -6,10 +6,10 @@ import (
 	"log"
 	"time"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/model"
-	"github.com/QuantumNous/new-api/setting"
-	"github.com/QuantumNous/new-api/setting/operation_setting"
+	"github.com/Guangjitop/new-api/common"
+	"github.com/Guangjitop/new-api/model"
+	"github.com/Guangjitop/new-api/setting"
+	"github.com/Guangjitop/new-api/setting/operation_setting"
 	"github.com/gin-gonic/gin"
 	"github.com/thanhpk/randstr"
 )

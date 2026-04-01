@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2025 QuantumNous
+Copyright (C) 2025 Guangjitop
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -14,13 +14,14 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-For commercial licensing, please contact support@quantumnous.com
+For commercial licensing, please contact your-email@example.com
 */
 
 import React from 'react';
 import { Card, Tag, Timeline, Empty } from '@douyinfe/semi-ui';
 import { Bell } from 'lucide-react';
 import { marked } from 'marked';
+import { sanitizeHtmlContent } from '../../helpers';
 import {
   IllustrationConstruction,
   IllustrationConstructionDark,
@@ -80,7 +81,12 @@ const AnnouncementsPanel = ({
         {announcementData.length > 0 ? (
           <Timeline mode='left'>
             {announcementData.map((item, idx) => {
-              const htmlExtra = item.extra ? marked.parse(item.extra) : '';
+              const htmlExtra = item.extra
+                ? sanitizeHtmlContent(marked.parse(item.extra))
+                : '';
+              const htmlContent = sanitizeHtmlContent(
+                marked.parse(item.content || ''),
+              );
               return (
                 <Timeline.Item
                   key={idx}
@@ -96,11 +102,7 @@ const AnnouncementsPanel = ({
                   }
                 >
                   <div>
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: marked.parse(item.content || ''),
-                      }}
-                    />
+                    <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
                   </div>
                 </Timeline.Item>
               );

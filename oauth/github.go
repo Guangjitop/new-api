@@ -10,10 +10,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/i18n"
-	"github.com/QuantumNous/new-api/logger"
-	"github.com/QuantumNous/new-api/model"
+	"github.com/Guangjitop/new-api/common"
+	"github.com/Guangjitop/new-api/i18n"
+	"github.com/Guangjitop/new-api/logger"
+	"github.com/Guangjitop/new-api/model"
 	"github.com/gin-gonic/gin"
 )
 

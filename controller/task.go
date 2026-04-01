@@ -3,13 +3,13 @@ package controller
 import (
 	"strconv"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/constant"
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/model"
-	"github.com/QuantumNous/new-api/relay"
-	"github.com/QuantumNous/new-api/service"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/Guangjitop/new-api/common"
+	"github.com/Guangjitop/new-api/constant"
+	"github.com/Guangjitop/new-api/dto"
+	"github.com/Guangjitop/new-api/model"
+	"github.com/Guangjitop/new-api/relay"
+	"github.com/Guangjitop/new-api/service"
+	"github.com/Guangjitop/new-api/types"
 
 	"github.com/gin-gonic/gin"
 )

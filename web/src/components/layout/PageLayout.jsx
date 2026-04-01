@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2025 QuantumNous
+Copyright (C) 2025 Guangjitop
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -14,7 +14,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-For commercial licensing, please contact support@quantumnous.com
+For commercial licensing, please contact your-email@example.com
 */
 
 import HeaderBar from './headerbar';
@@ -70,6 +70,41 @@ const PageLayout = () => {
 
   const isConsoleRoute = location.pathname.startsWith('/console');
   const showSider = isConsoleRoute && (!isMobile || drawerOpen);
+
+  useEffect(() => {
+    const { body, documentElement } = document;
+    const root = document.getElementById('root');
+    const isHomeRoute = location.pathname === '/';
+    const previousHtmlBackgroundImage = documentElement.style.backgroundImage;
+    const previousBodyBackgroundImage = body.style.backgroundImage;
+    const previousRootBackgroundImage = root ? root.style.backgroundImage : '';
+
+    documentElement.classList.toggle('page-home', isHomeRoute);
+    documentElement.classList.toggle('page-console', isConsoleRoute);
+    body.classList.toggle('page-home', isHomeRoute);
+    body.classList.toggle('page-console', isConsoleRoute);
+
+    if (isConsoleRoute) {
+      documentElement.style.backgroundImage = 'none';
+      body.style.backgroundImage = 'none';
+      if (root) {
+        root.style.backgroundImage = 'none';
+      }
+    }
+
+    return () => {
+      documentElement.classList.remove('page-home');
+      documentElement.classList.remove('page-console');
+      body.classList.remove('page-home');
+      body.classList.remove('page-console');
+
+      documentElement.style.backgroundImage = previousHtmlBackgroundImage;
+      body.style.backgroundImage = previousBodyBackgroundImage;
+      if (root) {
+        root.style.backgroundImage = previousRootBackgroundImage;
+      }
+    };
+  }, [location.pathname, isConsoleRoute]);
 
   useEffect(() => {
     if (isMobile && drawerOpen && collapsed) {
@@ -145,7 +180,7 @@ const PageLayout = () => {
 
   return (
     <Layout
-      className='app-layout'
+      className='app-layout min-h-screen text-cyber-text'
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -214,6 +249,7 @@ const PageLayout = () => {
               WebkitOverflowScrolling: 'touch',
               padding: shouldInnerPadding ? (isMobile ? '5px' : '24px') : '0',
               position: 'relative',
+              zIndex: location.pathname !== '/' ? 20 : 0,
             }}
           >
             <App />

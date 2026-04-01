@@ -18,6 +18,25 @@
   --sidebar-width: 180px;
   --sidebar-width-collapsed: 60px;
   --sidebar-current-width: var(--sidebar-width);
+
+  /* Cyberpunk Tokens */
+  --box-shadow-neon: 0 0 5px #00ff88, 0 0 10px #00ff8840;
+  --box-shadow-neon-sm: 0 0 3px #00ff88, 0 0 6px #00ff8830;
+  --box-shadow-neon-lg: 0 0 10px #00ff88, 0 0 20px #00ff8860, 0 0 40px #00ff8830;
+  --box-shadow-neon-secondary: 0 0 5px #ff00ff, 0 0 20px #ff00ff60;
+  --box-shadow-neon-tertiary: 0 0 5px #00d4ff, 0 0 20px #00d4ff60;
+
+  /* 字体栈重构 (Font Stacks) */
+  --font-mono-en: 'JetBrains Mono', 'Fira Code', Consolas, 'Menlo', monospace;
+  --font-heading-en: 'Orbitron', 'Share Tech Mono', monospace;
+  --font-accent-en: 'Share Tech Mono', monospace;
+  /* 补充完美适配的中文后备字体，兼顾科技感与清晰度 */
+  --font-zh: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  
+  /* 整合后的变量，项目中所有字体统一使用这三个变量 */
+  --font-cyber-body: var(--font-mono-en), var(--font-zh);
+  --font-cyber-heading: var(--font-heading-en), var(--font-zh);
+  --font-cyber-accent: var(--font-accent-en), var(--font-zh);
 }
 
 body.sidebar-collapsed {
@@ -25,10 +44,338 @@ body.sidebar-collapsed {
 }
 
 body {
-  font-family: Lato, 'Helvetica Neue', Arial, Helvetica, 'Microsoft YaHei',
-    sans-serif;
-  color: var(--semi-color-text-0);
+  font-family: var(--font-cyber-body);
+  color: #e0e0e0;
+  background-color: #0a0a0f;
+  margin: 0;
+  padding: 0;
+  /* 优化中文排版：基础行高和字间距 */
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  /* 开启抗锯齿，使字体更锐利 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 仅首页保留装饰扫描线/故障风格，控制台保证文字清晰 */
+html.page-console,
+html.page-console body,
+html.page-console #root,
+html.page-console .app-layout,
+html.page-console .semi-layout,
+html.page-console .semi-layout-content,
+html.page-console .semi-layout-content-main,
+html.page-console .semi-layout-content-inner,
+body.page-console,
+body.page-console .app-layout,
+body.page-console .semi-layout,
+body.page-console .semi-layout-content,
+body.page-console .semi-layout-content-main,
+body.page-console .semi-layout-content-inner {
+  background-image: none !important;
+}
+
+html.page-console::before,
+html.page-console::after,
+html.page-console body::before,
+html.page-console body::after,
+html.page-console #root::before,
+html.page-console #root::after,
+html.page-console .app-layout::before,
+html.page-console .app-layout::after,
+html.page-console .semi-layout::before,
+html.page-console .semi-layout::after,
+html.page-console .semi-layout-content::before,
+html.page-console .semi-layout-content::after,
+html.page-console .semi-layout-content-main::before,
+html.page-console .semi-layout-content-main::after,
+html.page-console .semi-layout-content-inner::before,
+html.page-console .semi-layout-content-inner::after,
+body.page-console::before,
+body.page-console::after,
+body.page-console .scanlines::before,
+body.page-console .scanlines::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+}
+
+html.page-console .cyber-grid-bg,
+body.page-console .cyber-grid-bg {
+  background-image: none !important;
+}
+
+body.page-console .cyber-glitch,
+html.page-console .cyber-glitch {
+  filter: none !important;
+}
+
+body.page-console .cyber-glitch::before,
+body.page-console .cyber-glitch::after,
+html.page-console .cyber-glitch::before,
+html.page-console .cyber-glitch::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Semi Design Overrides for Cyberpunk Dark Mode */
+body[theme-mode='dark'], body {
+  --semi-color-bg-0: #0a0a0f !important;
+  --semi-color-bg-1: #12121a !important;
+  --semi-color-bg-2: #1c1c2e !important;
+  --semi-color-text-0: #e0e0e0 !important;
+  --semi-color-primary: #00ff88 !important;
+  --semi-color-primary-hover: #00cc6a !important;
+  --semi-color-primary-active: #00994d !important;
+}
+
+
+
+/* cyber-chamfer utility */
+.cyber-chamfer {
+  clip-path: polygon(
+    0 10px, 10px 0,
+    calc(100% - 10px) 0, 100% 10px,
+    100% calc(100% - 10px), calc(100% - 10px) 100%,
+    10px 100%, 0 calc(100% - 10px)
+  );
+  border-radius: 0 !important;
+}
+
+.cyber-chamfer-sm {
+  clip-path: polygon(
+    0 4px, 4px 0,
+    calc(100% - 4px) 0, 100% 4px,
+    100% calc(100% - 4px), calc(100% - 4px) 100%,
+    4px 100%, 0 calc(100% - 4px)
+  );
+  border-radius: 0 !important;
+}
+
+/* cyper-glitch text effect - 严禁常规面板使用，仅限超大号标题 */
+.cyber-glitch {
+  position: relative;
+  /* 严格控制常态文字阴影，防止糊成一团 */
+  filter: drop-shadow(0 0 4px rgba(0, 255, 136, 0.25));
+}
+.cyber-glitch::before,
+.cyber-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* 降低伪元素的透明度，确保原文本的笔画依然最实、最清晰 */
+  opacity: 0.6;
+}
+.cyber-glitch::before {
+  left: 1px; /* 极小化错位距离 */
+  text-shadow: -1px 0 rgba(255, 0, 255, 0.6); /* 弱化边缘刺目的阴影 */
+  clip: rect(24px, 550px, 90px, 0);
+  animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+.cyber-glitch::after {
+  left: -1px; /* 极小化错位距离 */
+  text-shadow: 1px 0 rgba(0, 212, 255, 0.6); /* 弱化边缘刺目的阴影 */
+  clip: rect(85px, 550px, 140px, 0);
+  animation: glitch-anim 2.5s infinite linear alternate-reverse;
+}
+
+/* 首页两行主标题共用扫描层，确保下行扫光能覆盖到上行文字 */
+.cyber-title-scan {
+  isolation: isolate;
+}
+
+.cyber-title-scan::after {
+  content: '';
+  position: absolute;
+  inset: -10% -8%;
+  pointer-events: none;
+  z-index: 8;
+  mix-blend-mode: screen;
+  transform: translateX(-140%);
+  opacity: 0;
+  background: linear-gradient(
+    112deg,
+    transparent 0%,
+    transparent 34%,
+    rgba(167, 243, 208, 0.08) 44%,
+    rgba(45, 212, 191, 0.95) 50%,
+    rgba(167, 243, 208, 0.2) 56%,
+    transparent 64%,
+    transparent 100%
+  );
+  animation: cyber-title-scan-sweep 3.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  animation-delay: 0.35s;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(24px, 9999px, 86px, 0); }
+  20% { clip: rect(80px, 9999px, 49px, 0); }
+  40% { clip: rect(15px, 9999px, 5px, 0); }
+  60% { clip: rect(54px, 9999px, 93px, 0); }
+  80% { clip: rect(62px, 9999px, 73px, 0); }
+  100% { clip: rect(100px, 9999px, 34px, 0); }
+}
+@keyframes glitch-anim-2 {
+  0% { clip: rect(54px, 9999px, 15px, 0); }
+  20% { clip: rect(26px, 9999px, 73px, 0); }
+  40% { clip: rect(98px, 9999px, 81px, 0); }
+  60% { clip: rect(74px, 9999px, 62px, 0); }
+  80% { clip: rect(38px, 9999px, 92px, 0); }
+  100% { clip: rect(14px, 9999px, 4px, 0); }
+}
+
+/* 全高扫描故障，用于多行大标题统一效果 */
+.cyber-glitch-full {
+  position: relative;
+  filter: drop-shadow(0 0 4px rgba(0, 255, 136, 0.25));
+  white-space: pre-line;
+}
+.cyber-glitch-full::before,
+.cyber-glitch-full::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.65;
+  white-space: pre-line;
+}
+.cyber-glitch-full::before {
+  left: 2px;
+  text-shadow: -1px 0 rgba(255, 0, 255, 0.7);
+  animation: cyber-scan-down 5s infinite linear;
+}
+.cyber-glitch-full::after {
+  left: -2px;
+  text-shadow: 1px 0 rgba(0, 212, 255, 0.7);
+  animation: cyber-scan-up 6s infinite linear;
+}
+
+@keyframes cyber-scan-down {
+  0% { clip-path: inset(0% 0 97% 0); transform: translateX(-1px); }
+  20% { clip-path: inset(20% 0 77% 0); transform: translateX(2px) skewX(2deg); }
+  40% { clip-path: inset(40% 0 57% 0); transform: translateX(-2px) skewX(-1deg); }
+  60% { clip-path: inset(60% 0 37% 0); transform: translateX(1px); }
+  80% { clip-path: inset(80% 0 17% 0); transform: translateX(-1px) skewX(1deg); }
+  100% { clip-path: inset(100% 0 -3% 0); transform: translateX(0); }
+}
+
+@keyframes cyber-scan-up {
+  0% { clip-path: inset(97% 0 0% 0); transform: translateX(1px); }
+  20% { clip-path: inset(77% 0 20% 0); transform: translateX(-2px) skewX(-2deg); }
+  40% { clip-path: inset(57% 0 40% 0); transform: translateX(2px) skewX(1deg); }
+  60% { clip-path: inset(37% 0 60% 0); transform: translateX(-1px); }
+  80% { clip-path: inset(17% 0 80% 0); transform: translateX(1px) skewX(-1deg); }
+  100% { clip-path: inset(-3% 0 100% 0); transform: translateX(0); }
+}
+
+@keyframes cyber-title-scan-sweep {
+  0%,
+  14% {
+    transform: translateX(-140%);
+    opacity: 0;
+  }
+  26%,
+  58% {
+    opacity: 1;
+  }
+  76%,
+  100% {
+    transform: translateX(140%);
+    opacity: 0;
+  }
+}
+
+/* ================== CYBERPUNK SEMI-UI COMPONENTS OVERRIDES ================== */
+.semi-input-wrapper {
+  background-color: var(--semi-color-bg-1) !important;
+  border: 1px solid var(--semi-color-border) !important;
+  border-radius: 0 !important;
+  clip-path: polygon(
+    0 4px, 4px 0,
+    calc(100% - 4px) 0, 100% 4px,
+    100% calc(100% - 4px), calc(100% - 4px) 100%,
+    4px 100%, 0 calc(100% - 4px)
+  );
+  transition: all 0.2s ease;
+}
+
+.semi-input-wrapper:focus-within {
+  border-color: #00ff88 !important;
+  box-shadow: var(--box-shadow-neon-sm) !important;
+}
+
+.semi-input {
+  color: #00ff88 !important;
+  font-family: var(--font-cyber-body) !important;
+  background-color: transparent !important;
+  letter-spacing: normal !important; /* 避免输入中文时过宽 */
+}
+
+.semi-input::placeholder {
+  color: #6b7280 !important;
+  letter-spacing: normal !important;
+}
+
+.semi-button {
+  border-radius: 0 !important;
+  font-family: var(--font-cyber-accent) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important; /* 原0.1em对中文过大，导致松散，收缩间距 */
+  transition: all 0.2s ease !important;
+}
+
+/* Primary Button Override */
+.semi-button-primary {
+  background-color: #00ff88 !important;
+  color: #0a0a0f !important;
+  clip-path: polygon(
+    0 8px, 8px 0,
+    calc(100% - 8px) 0, 100% 8px,
+    100% calc(100% - 8px), calc(100% - 8px) 100%,
+    8px 100%, 0 calc(100% - 8px)
+  );
+}
+
+.semi-button-primary:hover {
+  filter: brightness(1.2) !important;
+  box-shadow: var(--box-shadow-neon) !important;
+}
+
+/* Tertiary/Outline Button Override */
+.semi-button-tertiary {
+  background-color: transparent !important;
+  border: 1px solid var(--semi-color-border) !important;
+  color: #e0e0e0 !important;
+  clip-path: polygon(
+    0 4px, 4px 0,
+    calc(100% - 4px) 0, 100% 4px,
+    100% calc(100% - 4px), calc(100% - 4px) 100%,
+    4px 100%, 0 calc(100% - 4px)
+  );
+}
+
+.semi-button-tertiary:hover {
+  border-color: #00ff88 !important;
+  color: #00ff88 !important;
+  box-shadow: var(--box-shadow-neon-sm) !important;
+  background-color: rgba(0, 255, 136, 0.05) !important;
+}
+
+/* ================== CYBERPUNK Layout BACKGROUND ================== */
+.cyber-grid-bg {
   background-color: var(--semi-color-bg-0);
+  background-image:
+    linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
 }
 
 /* 桌面端禁止 body 纵向滚动 - 防止 VChart tooltip 触发页面滚动条 */
@@ -46,6 +393,46 @@ body {
 .app-sider {
   height: calc(100vh - 64px);
   height: calc(100dvh - 64px);
+}
+
+/* ================== CYBERPUNK EMPTY STATE ================== */
+/* 隐藏 Semi UI 默认自带黑线条纹的暗黑模式插画 */
+.semi-empty-image,
+.semi-empty-illustration,
+.semi-empty [class*="image"],
+.semi-empty svg {
+  display: none !important;
+}
+
+/* 将空白状态设计成赛博朋克终端提示 */
+.semi-empty {
+  border: 1px dashed var(--semi-color-border) !important;
+  background: rgba(0, 255, 136, 0.02) !important;
+  padding: 40px 20px !important;
+  margin: 20px 0;
+  clip-path: polygon(
+    0 10px, 10px 0,
+    calc(100% - 10px) 0, 100% 10px,
+    100% calc(100% - 10px), calc(100% - 10px) 100%,
+    10px 100%, 0 calc(100% - 10px)
+  );
+}
+
+.semi-empty-description {
+  color: var(--semi-color-primary) !important;
+  font-family: var(--font-cyber-accent) !important;
+  font-size: 14px !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.semi-empty-description::before {
+  content: "[ SYS.WARN ] 404_DATA_NOT_FOUND : ";
+  color: var(--semi-color-text-2) !important;
 }
 
 code {
@@ -135,7 +522,7 @@ code {
   background: var(--semi-color-bg-0);
   height: 100%;
   overflow-x: hidden;
-  border-right: none;
+  border-right: 1px solid var(--cyber-border);
   overflow-y: auto;
   min-height: 0;
   -webkit-overflow-scrolling: touch;
@@ -149,21 +536,26 @@ code {
 
 /* 侧边栏导航项样式 */
 .sidebar-nav-item {
-  border-radius: 6px;
+  border-radius: 0;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
   margin: 3px 8px;
   transition: all 0.15s ease;
   padding: 8px 12px;
+  border-left: 2px solid transparent;
 }
 
 .sidebar-nav-item:hover {
-  background-color: rgba(var(--semi-blue-0), 0.08);
-  color: var(--semi-color-primary);
+  background-color: rgba(0, 255, 136, 0.1) !important;
+  color: #00ff88 !important;
+  border-left: 3px solid #00ff88;
 }
 
 .sidebar-nav-item-selected {
-  background-color: rgba(var(--semi-blue-0), 0.12);
-  color: var(--semi-color-primary);
-  font-weight: 500;
+  background-color: rgba(0, 255, 136, 0.2) !important;
+  color: #00ff88 !important;
+  font-weight: 700;
+  border-left: 4px solid #00ff88;
+  box-shadow: inset 0 0 10px rgba(0, 255, 136, 0.2);
 }
 
 /* 图标容器样式 */
@@ -197,10 +589,11 @@ code {
 /* 分组标签样式 */
 .sidebar-group-label {
   padding: 4px 15px 8px;
-  color: var(--semi-color-text-2);
+  color: var(--cyber-accent);
   font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 2px;
+  font-family: var(--font-cyber);
   opacity: 0.8;
 }
 
@@ -972,14 +1365,130 @@ html.dark .with-pastel-balls::before {
 .semi-navigation-sub-title,
 .semi-chat-inputBox-sendButton,
 .semi-page-item,
-.semi-navigation-item,
 .semi-tag-closable,
 .semi-input-wrapper,
 .semi-tabs-tab-button,
 .semi-select,
 .semi-button,
 .semi-datepicker-range-input {
-  border-radius: 10px !important;
+  border-radius: 0 !important;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
+}
+
+/* ==================== SEMI-UI COMPONENT THEME OVERRIDES ==================== */
+/* Tables */
+.semi-table {
+  background: var(--cyber-bg) !important;
+  color: var(--cyber-text) !important;
+  font-family: var(--font-mono) !important;
+  border: 1px solid var(--cyber-border);
+}
+.semi-table-thead > tr > th {
+  background: rgba(0, 255, 136, 0.1) !important;
+  color: var(--cyber-accent) !important;
+  text-transform: uppercase;
+  font-family: var(--font-cyber) !important;
+  letter-spacing: 1px;
+}
+.semi-table-row:hover > td, .semi-table-row:hover > th {
+  background: rgba(0, 255, 136, 0.05) !important;
+}
+
+/* Modals */
+.semi-modal {
+  background: var(--cyber-bg) !important;
+  border: 1px solid var(--cyber-accent) !important;
+  box-shadow: var(--box-shadow-neon) !important;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+}
+.semi-modal-header {
+  border-bottom: 1px solid var(--cyber-border) !important;
+}
+.semi-modal-title {
+  color: var(--cyber-accent) !important;
+  font-family: var(--font-cyber) !important;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Cards */
+.semi-card {
+  background: var(--cyber-card) !important;
+}
+.semi-card-body {
+  border: 1px solid var(--cyber-border) !important;
+  transition: all 0.3s ease;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+  background: var(--cyber-bg) !important;
+}
+.semi-card:hover .semi-card-body {
+  border-color: var(--cyber-accent) !important;
+  box-shadow: inset 0 0 10px rgba(0, 255, 136, 0.1) !important;
+}
+
+/* Popover / Tooltip */
+.semi-popover, .semi-tooltip {
+  background: var(--cyber-bg) !important;
+  border: 1px solid var(--cyber-accent) !important;
+  color: var(--cyber-text) !important;
+  box-shadow: var(--box-shadow-neon-sm) !important;
+}
+.semi-popover-content, .semi-tooltip-content {
+  font-family: var(--font-mono) !important;
+}
+
+/* Tabs */
+.semi-tabs-pane {
+  background: transparent !important;
+}
+.semi-tabs-tab {
+  font-family: var(--font-cyber) !important;
+  text-transform: uppercase;
+}
+.semi-tabs-tab-active {
+  color: var(--cyber-accent) !important;
+  text-shadow: 0 0 5px var(--cyber-accent);
+}
+
+/* Forms and Typography reset */
+.semi-form-field-label {
+  color: var(--cyber-accent) !important;
+  font-family: var(--font-mono) !important;
+}
+.semi-typography, .semi-typography-primary, .semi-typography-secondary {
+  color: var(--cyber-text);
+  font-family: var(--font-mono);
+}
+
+/* Base Banner & Alerts Override */
+.semi-banner {
+  background-color: var(--semi-color-bg-2) !important;
+  border: 1px solid var(--cyber-accent) !important;
+  border-radius: 0 !important;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+  color: var(--cyber-text) !important;
+  box-shadow: inset 0 0 10px rgba(0, 255, 136, 0.05);
+}
+.semi-banner-warning {
+  border-color: #f59e0b !important;
+  box-shadow: inset 0 0 10px rgba(245, 158, 11, 0.1);
+}
+.semi-banner-danger, .semi-banner-error {
+  border-color: #ef4444 !important;
+  box-shadow: inset 0 0 10px rgba(239, 68, 68, 0.1);
+}
+.semi-banner-info {
+  border-color: #3b82f6 !important;
+  box-shadow: inset 0 0 10px rgba(59, 130, 246, 0.1);
+}
+.semi-banner-title, .semi-banner-content {
+  color: inherit !important;
+}
+.semi-banner-warning .semi-banner-title {
+  color: #fbbf24 !important;
+}
+.semi-banner-danger .semi-banner-title {
+  color: #fca5a5 !important;
 }
 
 @keyframes slideInLeft {
@@ -1006,3 +1515,94 @@ html.dark .with-pastel-balls::before {
 }
 
 .ec-dbcd0a3c01b55203 { forced-color-adjust: auto; }
+
+/* ==================== 首页大模型提供商图标交互特效 ==================== */
+.model-icons-anim-group > div {
+  opacity: 0;
+  animation: model-icon-fade-in 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  /* 增加悬浮旋转和平滑缩放缓冲 */
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+  will-change: transform, opacity, filter;
+  cursor: pointer;
+}
+
+/* 常驻展示：模型图标顺时针缓慢旋转（最后一个 30+ 文本不旋转） */
+.model-icons-anim-group > div:not(:last-child) > * {
+  transform-origin: center;
+  animation: model-icon-spin-cw 10s linear infinite;
+  will-change: transform;
+}
+
+/* 悬浮增强：仅放大和发光，旋转由常驻动画负责 */
+.model-icons-anim-group > div:hover {
+  transform: scale(1.2) !important;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.8));
+  z-index: 10;
+}
+
+.model-icons-anim-group > div:hover > * {
+  animation-duration: 5s;
+}
+
+@keyframes model-icon-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes model-icon-spin-cw {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 错落有致的入场延迟 */
+.model-icons-anim-group > div:nth-child(1) { animation-delay: 0.05s; }
+.model-icons-anim-group > div:nth-child(2) { animation-delay: 0.10s; }
+.model-icons-anim-group > div:nth-child(3) { animation-delay: 0.15s; }
+.model-icons-anim-group > div:nth-child(4) { animation-delay: 0.20s; }
+.model-icons-anim-group > div:nth-child(5) { animation-delay: 0.25s; }
+.model-icons-anim-group > div:nth-child(6) { animation-delay: 0.30s; }
+.model-icons-anim-group > div:nth-child(7) { animation-delay: 0.35s; }
+.model-icons-anim-group > div:nth-child(8) { animation-delay: 0.40s; }
+.model-icons-anim-group > div:nth-child(9) { animation-delay: 0.45s; }
+.model-icons-anim-group > div:nth-child(10) { animation-delay: 0.50s; }
+.model-icons-anim-group > div:nth-child(11) { animation-delay: 0.55s; }
+.model-icons-anim-group > div:nth-child(12) { animation-delay: 0.60s; }
+.model-icons-anim-group > div:nth-child(13) { animation-delay: 0.65s; }
+.model-icons-anim-group > div:nth-child(14) { animation-delay: 0.70s; }
+.model-icons-anim-group > div:nth-child(15) { animation-delay: 0.75s; }
+.model-icons-anim-group > div:nth-child(16) { animation-delay: 0.80s; }
+.model-icons-anim-group > div:nth-child(17) { animation-delay: 0.85s; }
+.model-icons-anim-group > div:nth-child(18) { animation-delay: 0.90s; }
+.model-icons-anim-group > div:nth-child(19) { animation-delay: 0.95s; }
+.model-icons-anim-group > div:nth-child(20) { animation-delay: 1.00s; }
+.model-icons-anim-group > div:nth-child(21) { animation-delay: 1.05s; }
+.model-icons-anim-group > div:nth-child(n+22) { animation-delay: 1.10s; }
+
+/* ==================== 性能与无障碍适配 (Accessibility) ==================== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .cyber-glitch::before,
+  .cyber-glitch::after,
+  .scanlines::before {
+    display: none !important;
+    animation: none !important;
+  }
+}

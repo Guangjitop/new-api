@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/constant"
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/relay/channel/openrouter"
-	relaycommon "github.com/QuantumNous/new-api/relay/common"
-	"github.com/QuantumNous/new-api/relay/reasonmap"
+	"github.com/Guangjitop/new-api/common"
+	"github.com/Guangjitop/new-api/constant"
+	"github.com/Guangjitop/new-api/dto"
+	"github.com/Guangjitop/new-api/relay/channel/openrouter"
+	relaycommon "github.com/Guangjitop/new-api/relay/common"
+	"github.com/Guangjitop/new-api/relay/reasonmap"
 	"github.com/samber/lo"
 )
 

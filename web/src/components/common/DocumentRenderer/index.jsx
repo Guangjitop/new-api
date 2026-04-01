@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2025 QuantumNous
+Copyright (C) 2025 Guangjitop
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -14,7 +14,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-For commercial licensing, please contact support@quantumnous.com
+For commercial licensing, please contact your-email@example.com
 */
 
 import React, { useEffect, useState } from 'react';
@@ -162,7 +162,7 @@ const DocumentRenderer = ({ apiEndpoint, title, cacheKey, emptyMessage }) => {
   // 如果没有内容，显示空状态
   if (!content || content.trim() === '') {
     return (
-      <div className='flex justify-center items-center min-h-screen bg-gray-50'>
+      <div className='flex justify-center items-center min-h-screen cyber-grid-bg cyber-container'>
         <Empty
           title={t('管理员未设置' + title + '内容')}
           image={
@@ -180,13 +180,13 @@ const DocumentRenderer = ({ apiEndpoint, title, cacheKey, emptyMessage }) => {
   // 如果是 URL，显示链接卡片
   if (isUrl(content)) {
     return (
-      <div className='flex justify-center items-center min-h-screen bg-gray-50 p-4'>
-        <Card className='max-w-md w-full'>
+      <div className='flex justify-center items-center min-h-screen cyber-grid-bg cyber-container p-4'>
+        <Card className='max-w-md w-full cyber-card cyber-chamfer border-cyber-accent shadow-[var(--box-shadow-neon-sm)]'>
           <div className='text-center'>
-            <Title heading={4} className='mb-4'>
+            <Title heading={4} className='mb-4 text-cyber-accent font-cyber uppercase tracking-widest'>
               {title}
             </Title>
-            <p className='text-gray-600 mb-4'>
+            <p className='text-cyber-text opacity-80 mb-4 font-mono'>
               {t('管理员设置了外部链接，点击下方按钮访问')}
             </p>
             <a
@@ -195,7 +195,7 @@ const DocumentRenderer = ({ apiEndpoint, title, cacheKey, emptyMessage }) => {
               rel='noopener noreferrer'
               title={content.trim()}
               aria-label={`${t('访问' + title)}: ${content.trim()}`}
-              className='inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'
+              className='inline-block px-6 py-3 bg-cyber-accent text-cyber-bg cyber-chamfer-sm font-bold uppercase font-mono hover:shadow-[var(--box-shadow-neon)] transition-all'
             >
               {t('访问' + title)}
             </a>
@@ -217,14 +217,14 @@ const DocumentRenderer = ({ apiEndpoint, title, cacheKey, emptyMessage }) => {
     }, [content, styles, htmlStyles]);
 
     return (
-      <div className='min-h-screen bg-gray-50'>
-        <div className='max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8'>
-          <div className='bg-white rounded-lg shadow-sm p-8'>
-            <Title heading={2} className='text-center mb-8'>
+      <div className='min-h-screen cyber-grid-bg cyber-container text-cyber-text mt-[60px]'>
+        <div className='max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8 bg-black/40 cyber-chamfer border border-cyber-border backdrop-blur-md mt-6'>
+          <div className='p-8'>
+            <Title heading={2} className='text-center mb-8 text-cyber-accent font-cyber uppercase tracking-widest cyber-glitch' data-text={title}>
               {title}
             </Title>
             <div
-              className='prose prose-lg max-w-none'
+              className='prose prose-lg prose-invert max-w-none text-cyber-text'
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </div>
@@ -235,13 +235,13 @@ const DocumentRenderer = ({ apiEndpoint, title, cacheKey, emptyMessage }) => {
 
   // 其他内容统一使用 Markdown 渲染器
   return (
-    <div className='min-h-screen bg-gray-50'>
-      <div className='max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8'>
-        <div className='bg-white rounded-lg shadow-sm p-8'>
-          <Title heading={2} className='text-center mb-8'>
+    <div className='min-h-screen cyber-grid-bg cyber-container text-cyber-text mt-[60px]'>
+      <div className='max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8 bg-black/40 cyber-chamfer border border-cyber-border backdrop-blur-md mt-6'>
+        <div className='p-8'>
+          <Title heading={2} className='text-center mb-8 text-cyber-accent font-cyber uppercase tracking-widest cyber-glitch' data-text={title}>
             {title}
           </Title>
-          <div className='prose prose-lg max-w-none'>
+          <div className='prose prose-lg prose-invert max-w-none text-cyber-text'>
             <MarkdownRenderer content={content} />
           </div>
         </div>

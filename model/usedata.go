@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/QuantumNous/new-api/common"
+	"github.com/Guangjitop/new-api/common"
 	"gorm.io/gorm"
 )
 

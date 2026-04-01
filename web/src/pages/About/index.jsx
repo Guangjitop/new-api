@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2025 QuantumNous
+Copyright (C) 2025 Guangjitop
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -14,7 +14,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-For commercial licensing, please contact support@quantumnous.com
+For commercial licensing, please contact your-email@example.com
 */
 
 import React, { useEffect, useState } from 'react';
@@ -32,6 +32,7 @@ const About = () => {
   const [about, setAbout] = useState('');
   const [aboutLoaded, setAboutLoaded] = useState(false);
   const currentYear = new Date().getFullYear();
+  const projectUrl = window.location.origin;
 
   const displayAbout = async () => {
     setAbout(localStorage.getItem('about') || '');
@@ -62,32 +63,32 @@ const About = () => {
   const customDescription = (
     <div style={{ textAlign: 'center' }}>
       <p>{t('可在设置页面设置关于内容，支持 HTML & Markdown')}</p>
-      {t('New API项目仓库地址：')}
+      {t('项目地址：')}
       <a
-        href='https://github.com/QuantumNous/new-api'
+        href={projectUrl}
         target='_blank'
         rel='noopener noreferrer'
         className='!text-semi-color-primary'
       >
-        https://github.com/QuantumNous/new-api
+        {projectUrl}
       </a>
       <p>
         <a
-          href='https://github.com/QuantumNous/new-api'
+          href={projectUrl}
           target='_blank'
           rel='noopener noreferrer'
           className='!text-semi-color-primary'
         >
-          NewAPI
+          icucode
         </a>{' '}
         {t('© {{currentYear}}', { currentYear })}{' '}
         <a
-          href='https://github.com/QuantumNous'
+          href='https://github.com/Guangjitop'
           target='_blank'
           rel='noopener noreferrer'
           className='!text-semi-color-primary'
         >
-          QuantumNous
+          Guangjitop
         </a>{' '}
         {t('| 基于')}{' '}
         <a
@@ -133,7 +134,7 @@ const About = () => {
   );
 
   return (
-    <div className='mt-[60px] px-2'>
+    <div className='cyber-grid-bg min-h-screen text-cyber-text pt-[60px] px-4'>
       {aboutLoaded && about === '' ? (
         <div className='flex justify-center items-center h-screen p-8'>
           <Empty
@@ -156,13 +157,17 @@ const About = () => {
           {about.startsWith('https://') ? (
             <iframe
               src={about}
-              style={{ width: '100%', height: '100vh', border: 'none' }}
+              style={{ width: '100%', height: 'calc(100vh - 60px)', border: 'none' }}
             />
           ) : (
-            <div
-              style={{ fontSize: 'larger' }}
-              dangerouslySetInnerHTML={{ __html: about }}
-            ></div>
+            <div className='max-w-4xl mx-auto py-12'>
+              <div className='bg-black/40 cyber-chamfer border border-cyber-border backdrop-blur-md p-8'>
+                <div
+                  className='prose prose-lg prose-invert text-cyber-text max-w-none'
+                  dangerouslySetInnerHTML={{ __html: about }}
+                ></div>
+              </div>
+            </div>
           )}
         </>
       )}

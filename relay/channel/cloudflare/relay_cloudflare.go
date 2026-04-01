@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/logger"
-	relaycommon "github.com/QuantumNous/new-api/relay/common"
-	"github.com/QuantumNous/new-api/relay/helper"
-	"github.com/QuantumNous/new-api/service"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/Guangjitop/new-api/dto"
+	"github.com/Guangjitop/new-api/logger"
+	relaycommon "github.com/Guangjitop/new-api/relay/common"
+	"github.com/Guangjitop/new-api/relay/helper"
+	"github.com/Guangjitop/new-api/service"
+	"github.com/Guangjitop/new-api/types"
 	"github.com/samber/lo"
 
 	"github.com/gin-gonic/gin"

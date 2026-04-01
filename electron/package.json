@@ -18,10 +18,10 @@
     "openai",
     "claude"
   ],
-  "author": "QuantumNous",
+  "author": "Guangjitop",
   "repository": {
     "type": "git",
-    "url": "https://github.com/QuantumNous/new-api"
+    "url": "https://github.com/Guangjitop/new-api"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

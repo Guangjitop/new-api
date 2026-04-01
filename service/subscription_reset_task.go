@@ -7,9 +7,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/logger"
-	"github.com/QuantumNous/new-api/model"
+	"github.com/Guangjitop/new-api/common"
+	"github.com/Guangjitop/new-api/logger"
+	"github.com/Guangjitop/new-api/model"
 
 	"github.com/bytedance/gopkg/util/gopool"
 )

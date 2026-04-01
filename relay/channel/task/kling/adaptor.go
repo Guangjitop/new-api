@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/model"
+	"github.com/Guangjitop/new-api/common"
+	"github.com/Guangjitop/new-api/model"
 
 	"github.com/samber/lo"
 
@@ -19,12 +19,12 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/pkg/errors"
 
-	"github.com/QuantumNous/new-api/constant"
-	"github.com/QuantumNous/new-api/dto"
-	"github.com/QuantumNous/new-api/relay/channel"
-	taskcommon "github.com/QuantumNous/new-api/relay/channel/task/taskcommon"
-	relaycommon "github.com/QuantumNous/new-api/relay/common"
-	"github.com/QuantumNous/new-api/service"
+	"github.com/Guangjitop/new-api/constant"
+	"github.com/Guangjitop/new-api/dto"
+	"github.com/Guangjitop/new-api/relay/channel"
+	taskcommon "github.com/Guangjitop/new-api/relay/channel/task/taskcommon"
+	relaycommon "github.com/Guangjitop/new-api/relay/common"
+	"github.com/Guangjitop/new-api/service"
 )
 
 // ============================

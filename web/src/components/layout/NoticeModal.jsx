@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2025 QuantumNous
+Copyright (C) 2025 Guangjitop
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -14,7 +14,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-For commercial licensing, please contact support@quantumnous.com
+For commercial licensing, please contact your-email@example.com
 */
 
 import React, { useEffect, useState, useContext, useMemo } from 'react';
@@ -27,7 +27,12 @@ import {
   Timeline,
 } from '@douyinfe/semi-ui';
 import { useTranslation } from 'react-i18next';
-import { API, showError, getRelativeTime } from '../../helpers';
+import {
+  API,
+  showError,
+  getRelativeTime,
+  sanitizeHtmlContent,
+} from '../../helpers';
 import { marked } from 'marked';
 import {
   IllustrationNoContent,
@@ -90,7 +95,7 @@ const NoticeModal = ({
       if (success) {
         if (data !== '') {
           const htmlNotice = marked.parse(data);
-          setNoticeContent(htmlNotice);
+          setNoticeContent(sanitizeHtmlContent(htmlNotice));
         } else {
           setNoticeContent('');
         }
@@ -170,8 +175,12 @@ const NoticeModal = ({
       <div className='max-h-[55vh] overflow-y-auto pr-2 card-content-scroll'>
         <Timeline mode='left'>
           {processedAnnouncements.map((item, idx) => {
-            const htmlContent = marked.parse(item.content || '');
-            const htmlExtra = item.extra ? marked.parse(item.extra) : '';
+            const htmlContent = sanitizeHtmlContent(
+              marked.parse(item.content || ''),
+            );
+            const htmlExtra = item.extra
+              ? sanitizeHtmlContent(marked.parse(item.extra))
+              : '';
             return (
               <Timeline.Item
                 key={idx}

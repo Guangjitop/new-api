@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/QuantumNous/new-api/common"
-	"github.com/QuantumNous/new-api/logger"
-	"github.com/QuantumNous/new-api/types"
+	"github.com/Guangjitop/new-api/common"
+	"github.com/Guangjitop/new-api/logger"
+	"github.com/Guangjitop/new-api/types"
 
 	"github.com/gin-gonic/gin"
 

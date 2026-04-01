@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2025 QuantumNous
+Copyright (C) 2025 Guangjitop
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -14,7 +14,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-For commercial licensing, please contact support@quantumnous.com
+For commercial licensing, please contact your-email@example.com
 */
 
 import React from 'react';
@@ -37,7 +37,7 @@ import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
 // Welcome message (Do not remove this without permission from the original developer)
 if (typeof window !== 'undefined') {
   console.log(
-    '%cWE ❤ NEWAPI%c Github: https://github.com/QuantumNous/new-api',
+    '%cWE ❤ ICUCODE%c Official: /',
     'color: #10b981; font-weight: bold; font-size: 24px;',
     'color: inherit; font-size: 14px;',
   );
@@ -56,22 +56,20 @@ function SemiLocaleWrapper({ children }) {
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <StatusProvider>
-      <UserProvider>
-        <BrowserRouter
-          future={{
-            v7_startTransition: true,
-            v7_relativeSplatPath: true,
-          }}
-        >
-          <ThemeProvider>
-            <SemiLocaleWrapper>
-              <PageLayout />
-            </SemiLocaleWrapper>
-          </ThemeProvider>
-        </BrowserRouter>
-      </UserProvider>
-    </StatusProvider>
-  </React.StrictMode>,
+  <StatusProvider>
+    <UserProvider>
+      <BrowserRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
+        <ThemeProvider>
+          <SemiLocaleWrapper>
+            <PageLayout />
+          </SemiLocaleWrapper>
+        </ThemeProvider>
+      </BrowserRouter>
+    </UserProvider>
+  </StatusProvider>,
 );

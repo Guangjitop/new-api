@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2025 QuantumNous
+Copyright (C) 2025 Guangjitop
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -14,7 +14,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-For commercial licensing, please contact support@quantumnous.com
+For commercial licensing, please contact your-email@example.com
 */
 
 import React from 'react';
@@ -22,6 +22,7 @@ import { Card, Collapse, Empty } from '@douyinfe/semi-ui';
 import { HelpCircle } from 'lucide-react';
 import { IconPlus, IconMinus } from '@douyinfe/semi-icons';
 import { marked } from 'marked';
+import { sanitizeHtmlContent } from '../../helpers';
 import {
   IllustrationConstruction,
   IllustrationConstructionDark,
@@ -62,7 +63,7 @@ const FaqPanel = ({
               >
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: marked.parse(item.answer || ''),
+                    __html: sanitizeHtmlContent(marked.parse(item.answer || '')),
                   }}
                 />
               </Collapse.Panel>

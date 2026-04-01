@@ -1,7 +1,7 @@
 package ali
 
 import (
-	"github.com/QuantumNous/new-api/dto"
+	"github.com/Guangjitop/new-api/dto"
 	"github.com/samber/lo"
 )
 

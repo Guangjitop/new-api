@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2025 QuantumNous
+Copyright (C) 2025 Guangjitop
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -14,7 +14,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-For commercial licensing, please contact support@quantumnous.com
+For commercial licensing, please contact your-email@example.com
 */
 
 import React from 'react';
@@ -57,7 +57,9 @@ const HeaderLogo = ({
           >
             <Typography.Title
               heading={4}
-              className='!text-lg !font-semibold !mb-0'
+              className='!text-lg !font-cyber !text-cyber-accent tracking-widest cyber-glitch !mb-0 normal-case'
+              data-text={systemName}
+              style={{ textTransform: 'none' }}
             >
               {systemName}
             </Typography.Title>
