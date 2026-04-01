@@ -39,6 +39,19 @@ const Navigation = ({
     return mainNavLinks.map((link) => {
       const linkContent = <span>{link.text}</span>;
 
+      if (link.onClick) {
+        return (
+          <button
+            key={link.itemKey}
+            type='button'
+            className={`${commonLinkClasses} bg-transparent border-0 cursor-pointer`}
+            onClick={link.onClick}
+          >
+            {linkContent}
+          </button>
+        );
+      }
+
       if (link.isExternal) {
         return (
           <a

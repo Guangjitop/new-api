@@ -431,6 +431,19 @@ docker run --name new-api -d --restart always \
 
 </details>
 
+<details>
+<summary><strong>方式 4：服务器源码部署实战</strong></summary>
+
+适合下面这些场景：
+
+- 小内存服务器，不想在机器上硬跑 Docker 构建
+- 想用 `systemd + Nginx + HTTPS` 做单机部署
+- 域名挂在 `Cloudflare` 后面，需要排查 `521`、证书、反代这些问题
+
+📖 [服务器部署与实战经验](./docs/installation/server-deployment.md)
+
+</details>
+
 ### ⚠️ 多机部署注意事项
 
 > [!WARNING]

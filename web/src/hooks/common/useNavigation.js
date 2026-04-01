@@ -18,6 +18,7 @@ For commercial licensing, please contact your-email@example.com
 */
 
 import { useMemo } from 'react';
+import { showInfo } from '../../helpers';
 
 export const useNavigation = (t, docsLink, headerNavModules) => {
   const mainNavLinks = useMemo(() => {
@@ -54,8 +55,7 @@ export const useNavigation = (t, docsLink, headerNavModules) => {
             {
               text: t('文档'),
               itemKey: 'docs',
-              isExternal: true,
-              externalLink: docsLink,
+              onClick: () => showInfo(t('文档暂未开放，敬请期待')),
             },
           ]
         : []),

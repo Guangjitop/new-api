@@ -17,13 +17,14 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact your-email@example.com
 */
 
-import React, { useEffect, useState, useMemo, useContext } from 'react';
+import React, { useEffect, useState, useMemo, useContext, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Typography } from '@douyinfe/semi-ui';
 import {
   getFooterHTML,
   getLogo,
   getSystemName,
+  showInfo,
   sanitizeHtmlContent,
 } from '../../helpers';
 import { StatusContext } from '../../context/Status';
@@ -42,7 +43,10 @@ const FooterBar = () => {
   const logo = getLogo();
   const [statusState] = useContext(StatusContext);
   const isDemoSiteMode = statusState?.status?.demo_site_enabled || false;
-  const docsLink = statusState?.status?.docs_link || '/';
+
+  const handleDocsUnavailable = useCallback(() => {
+    showInfo(t('文档暂未开放，敬请期待'));
+  }, [t]);
 
   const loadFooter = () => {
     let footer_html = localStorage.getItem('footer_html');
@@ -73,30 +77,33 @@ const FooterBar = () => {
                   {t('关于我们')}
                 </p>
                 <div className='flex flex-col gap-4'>
-                  <a
-                    href={docsLink}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='!text-semi-color-text-1'
+                  <button
+                    type='button'
+                    className='!text-semi-color-text-1 text-left bg-transparent border-0 p-0 cursor-pointer'
+                    onClick={() => {
+                      handleDocsUnavailable();
+                    }}
                   >
                     {t('关于项目')}
-                  </a>
-                  <a
-                    href={docsLink}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='!text-semi-color-text-1'
+                  </button>
+                  <button
+                    type='button'
+                    className='!text-semi-color-text-1 text-left bg-transparent border-0 p-0 cursor-pointer'
+                    onClick={() => {
+                      handleDocsUnavailable();
+                    }}
                   >
                     {t('联系我们')}
-                  </a>
-                  <a
-                    href={docsLink}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='!text-semi-color-text-1'
+                  </button>
+                  <button
+                    type='button'
+                    className='!text-semi-color-text-1 text-left bg-transparent border-0 p-0 cursor-pointer'
+                    onClick={() => {
+                      handleDocsUnavailable();
+                    }}
                   >
                     {t('功能特性')}
-                  </a>
+                  </button>
                 </div>
               </div>
 
@@ -105,30 +112,33 @@ const FooterBar = () => {
                   {t('文档')}
                 </p>
                 <div className='flex flex-col gap-4'>
-                  <a
-                    href={docsLink}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='!text-semi-color-text-1'
+                  <button
+                    type='button'
+                    className='!text-semi-color-text-1 text-left bg-transparent border-0 p-0 cursor-pointer'
+                    onClick={() => {
+                      handleDocsUnavailable();
+                    }}
                   >
                     {t('快速开始')}
-                  </a>
-                  <a
-                    href={docsLink}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='!text-semi-color-text-1'
+                  </button>
+                  <button
+                    type='button'
+                    className='!text-semi-color-text-1 text-left bg-transparent border-0 p-0 cursor-pointer'
+                    onClick={() => {
+                      handleDocsUnavailable();
+                    }}
                   >
                     {t('安装指南')}
-                  </a>
-                  <a
-                    href={docsLink}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='!text-semi-color-text-1'
+                  </button>
+                  <button
+                    type='button'
+                    className='!text-semi-color-text-1 text-left bg-transparent border-0 p-0 cursor-pointer'
+                    onClick={() => {
+                      handleDocsUnavailable();
+                    }}
                   >
                     {t('API 文档')}
-                  </a>
+                  </button>
                 </div>
               </div>
 
@@ -208,7 +218,7 @@ const FooterBar = () => {
         </div>
       </footer>
     ),
-    [logo, displaySystemName, docsLink, t, isDemoSiteMode],
+    [logo, displaySystemName, t, isDemoSiteMode, handleDocsUnavailable],
   );
 
   useEffect(() => {

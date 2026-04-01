@@ -459,6 +459,181 @@ sudo systemctl restart new-api
 curl -sS http://127.0.0.1:3000/api/status
 ```
 
+## 13. 一次真实上线的经验总结（Debian 13 + 1G 小机 + Cloudflare）
+
+这一节不是“理论推荐”，而是一次真实落地后的复盘，适合下面这种环境：
+
+- 系统：`Debian 13`
+- 机器配置：`1C1G` + `1G swap`
+- 域名接入：`Cloudflare` 代理
+- 最终方案：`源码部署 + SQLite + systemd + Nginx + Let's Encrypt`
+
+### 13.1 小内存机器别硬刚 Docker 构建
+
+如果你的服务器只有 `1G` 左右内存，不建议直接在机器上执行 `docker compose up -d --build` 或本地源码全量构建：
+
+- 前端构建需要 `bun install` + `bun run build`
+- 后端构建需要 `go build`
+- 两段叠在一起，特别容易把小机内存打满
+
+更稳的做法有两种：
+
+1. 本地先构建 Linux 二进制和 `web/dist`，再上传到服务器
+2. 服务器直接走“源码部署”，但要接受构建时间更长、资源更紧张
+
+如果只是先把服务跑起来，`SQLite + systemd` 往往比 `Docker + PostgreSQL + Redis` 更省心。
+
+### 13.2 源码部署时别忘了 `web/dist`
+
+源码部署最容易踩的坑是：仓库里默认**不包含** `web/dist`。
+
+这意味着你如果只是：
+
+```bash
+git clone ...
+go build ...
+```
+
+后端虽然能启动，但前端页面不一定完整。正确方式是二选一：
+
+```bash
+cd /opt/new-api/new-api/web
+bun install
+DISABLE_ESLINT_PLUGIN='true' VITE_REACT_APP_VERSION=$(cat /opt/new-api/new-api/VERSION) bun run build
+```
+
+或者：
+
+- 在本地构建好 `web/dist`
+- 和 Linux 二进制一起上传到服务器
+
+### 13.3 `systemd` 托管比后台挂进程稳得多
+
+单机部署推荐直接用 `systemd` 托管，不要长期依赖 `nohup` 或手工开终端顶着：
+
+```ini
+[Unit]
+Description=New API Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/new-api/new-api
+EnvironmentFile=/opt/new-api/new-api/.env.prod
+ExecStart=/opt/new-api/new-api/new-api --port 3000 --log-dir /opt/new-api/new-api/logs
+Restart=always
+RestartSec=5
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
+```
+
+最少要保证这些目录存在：
+
+- `/opt/new-api/new-api/logs`
+- `/opt/new-api/new-api/data`
+
+### 13.4 Cloudflare 出现 `521`，先查源站 `80/443`
+
+如果域名挂了 `Cloudflare` 代理，浏览器里看到 `521`，不要一上来怀疑项目代码，先查这几个点：
+
+1. 源站 `80/443` 是否真的在监听
+2. `Nginx` 是否已经启动
+3. Cloudflare DNS 记录是否真的指向当前服务器公网 IP
+4. 服务器防火墙是否放行 `80/443`
+
+实战里最常见的情况是：
+
+- `new-api` 在 `3000` 跑着
+- 但 `Nginx` 没装、没启动，或者没正确接管 `80/443`
+- 结果 Cloudflare 回源失败，直接给你一个 `521`
+
+排查命令：
+
+```bash
+ss -lntp | grep -E ':80|:443|:3000'
+systemctl status nginx --no-pager
+curl -sS http://127.0.0.1:3000/api/status
+curl -sS http://127.0.0.1/api/status
+```
+
+### 13.5 健康检查优先用 `GET /api/status`
+
+实战里建议统一用：
+
+```bash
+curl -sS http://127.0.0.1:3000/api/status
+curl -sS https://your-domain/api/status
+```
+
+不要把 `HEAD /api/status` 当成唯一判断依据。某些代理链路下，`HEAD` 的返回并不稳定，容易误判成服务挂了。
+
+### 13.6 Nginx 先求稳，先打通再谈优雅
+
+如果你发现域名能打开默认欢迎页、但接口没反代成功，不要跟默认站点死磕太久。对于单域名单服务，最稳的方式是先让 `Nginx` 直接接管默认站点：
+
+```nginx
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _ your-domain;
+
+    client_max_body_size 50m;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_buffering off;
+        proxy_read_timeout 3600s;
+    }
+}
+```
+
+先确认 `http://your-domain/api/status` 返回 `success: true`，再交给 `certbot` 接手 HTTPS。
+
+### 13.7 证书申请完成后要做两次验收
+
+证书不是申请成功就完事，至少补这两步：
+
+```bash
+curl -I https://your-domain/
+curl -sS https://your-domain/api/status
+certbot renew --dry-run
+```
+
+重点看三件事：
+
+- `443` 已正常监听
+- 业务接口能返回 JSON，而不是跳错页面
+- 自动续期模拟能通过
+
+### 13.8 初始化完成后别忘了改正式域名配置
+
+首次部署完成后，后台初始化时还会带着一些默认值。至少要检查：
+
+- 站点地址是否还是 `http://localhost:3000`
+- Passkey / OAuth / 回调域名是否仍是本地地址
+
+如果你已经切到正式域名，建议在后台把相关配置统一改成你的线上地址，否则后面做登录、Passkey、三方回调时会继续踩坑。
+
+### 13.9 一份够用的上线后自检清单
+
+上线后至少确认以下项目：
+
+- `systemctl is-active new-api` 返回 `active`
+- `systemctl is-active nginx` 返回 `active`
+- `curl -sS http://127.0.0.1:3000/api/status` 成功
+- `curl -sS https://your-domain/api/status` 成功
+- `https://your-domain/api/setup` 能正常返回初始化状态
+- `certbot renew --dry-run` 成功
+- `journalctl -u new-api -f` 中没有持续报错
+
 ---
 
 如果你希望，我可以继续给你补一版：
