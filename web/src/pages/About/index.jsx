@@ -31,17 +31,26 @@ const About = () => {
   const { t } = useTranslation();
   const [about, setAbout] = useState('');
   const [aboutLoaded, setAboutLoaded] = useState(false);
-  const currentYear = new Date().getFullYear();
   const projectUrl = window.location.origin;
+  const stripLegacyAboutNotice = (content = '') =>
+    content
+      .replace(/^.*One API v0\.5\.4.*(?:\r?\n)?/gim, '')
+      .replace(/^.*AGPL v3\.0.*(?:\r?\n)?/gim, '')
+      .trim();
 
   const displayAbout = async () => {
-    setAbout(localStorage.getItem('about') || '');
+    const cachedAbout = localStorage.getItem('about') || '';
+    if (cachedAbout && !cachedAbout.startsWith('https://')) {
+      setAbout(stripLegacyAboutNotice(cachedAbout));
+    } else {
+      setAbout(cachedAbout);
+    }
     const res = await API.get('/api/about');
     const { success, message, data } = res.data;
     if (success) {
       let aboutContent = data;
       if (!data.startsWith('https://')) {
-        aboutContent = marked.parse(data);
+        aboutContent = marked.parse(stripLegacyAboutNotice(data));
       }
       setAbout(aboutContent);
       localStorage.setItem('about', aboutContent);
@@ -72,64 +81,6 @@ const About = () => {
       >
         {projectUrl}
       </a>
-      <p>
-        <a
-          href={projectUrl}
-          target='_blank'
-          rel='noopener noreferrer'
-          className='!text-semi-color-primary'
-        >
-          icucode
-        </a>{' '}
-        {t('© {{currentYear}}', { currentYear })}{' '}
-        <a
-          href='https://github.com/Guangjitop'
-          target='_blank'
-          rel='noopener noreferrer'
-          className='!text-semi-color-primary'
-        >
-          Guangjitop
-        </a>{' '}
-        {t('| 基于')}{' '}
-        <a
-          href='https://github.com/songquanpeng/one-api/releases/tag/v0.5.4'
-          target='_blank'
-          rel='noopener noreferrer'
-          className='!text-semi-color-primary'
-        >
-          One API v0.5.4
-        </a>{' '}
-        © 2023{' '}
-        <a
-          href='https://github.com/songquanpeng'
-          target='_blank'
-          rel='noopener noreferrer'
-          className='!text-semi-color-primary'
-        >
-          JustSong
-        </a>
-      </p>
-      <p>
-        {t('本项目根据')}
-        <a
-          href='https://github.com/songquanpeng/one-api/blob/v0.5.4/LICENSE'
-          target='_blank'
-          rel='noopener noreferrer'
-          className='!text-semi-color-primary'
-        >
-          {t('MIT许可证')}
-        </a>
-        {t('授权，需在遵守')}
-        <a
-          href='https://www.gnu.org/licenses/agpl-3.0.html'
-          target='_blank'
-          rel='noopener noreferrer'
-          className='!text-semi-color-primary'
-        >
-          {t('AGPL v3.0协议')}
-        </a>
-        {t('的前提下使用。')}
-      </p>
     </div>
   );
 

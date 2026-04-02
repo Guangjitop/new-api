@@ -37,6 +37,15 @@
   --font-cyber-body: var(--font-mono-en), var(--font-zh);
   --font-cyber-heading: var(--font-heading-en), var(--font-zh);
   --font-cyber-accent: var(--font-accent-en), var(--font-zh);
+
+  /* Cyber UI 兼容变量：避免未定义时出现透明层导致内容穿透 */
+  --cyber-bg: var(--semi-color-bg-0);
+  --cyber-card: var(--semi-color-bg-1);
+  --cyber-text: var(--semi-color-text-0);
+  --cyber-accent: var(--semi-color-primary);
+  --cyber-border: var(--semi-color-border);
+  --font-mono: var(--font-cyber-body);
+  --font-cyber: var(--font-cyber-accent);
 }
 
 body.sidebar-collapsed {
@@ -1392,6 +1401,12 @@ html.dark .with-pastel-balls::before {
 }
 .semi-table-row:hover > td, .semi-table-row:hover > th {
   background: rgba(0, 255, 136, 0.05) !important;
+}
+
+/* 固定列必须有不透明背景，防止使用日志等页面出现“下一层内容透出” */
+.semi-table [class*='semi-table-row-cell-fixed'],
+.semi-table [class*='semi-table-row-head-fixed'] {
+  background: var(--cyber-bg) !important;
 }
 
 /* Modals */
